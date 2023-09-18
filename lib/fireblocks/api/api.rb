@@ -31,9 +31,9 @@ module Fireblocks
         Request.post(path: "/v1/vault/accounts/#{vault_account_id}/#{asset_id}")
       end
 
-      def create_deposit_address(vault_account_id, asset_id, description: nil)
+      def create_deposit_address(vault_account_id, asset_id, description: nil, customer_ref_id: nil)
         Request.post(
-          body: { description: description },
+          body: { description: description, customerRefId: customer_ref_id },
           path: "/v1/vault/accounts/#{vault_account_id}/#{asset_id}/addresses"
         )
       end
