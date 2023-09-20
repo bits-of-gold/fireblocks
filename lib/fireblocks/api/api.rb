@@ -76,6 +76,10 @@ module Fireblocks
       def get_transaction(txId)
         Request.get(path: "/v1/transactions/#{txId}")
       end
+
+      def get_tx_by_external_tx_id(external_tx_id)
+        Request.get(path: "/v1/transactions/external_tx_id/#{external_tx_id}/")
+      end
     end
   end
 end
