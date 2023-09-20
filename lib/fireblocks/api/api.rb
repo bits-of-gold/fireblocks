@@ -59,6 +59,23 @@ module Fireblocks
       def get_supported_assets
         Request.get(path: '/v1/supported_assets')
       end
+
+      def resend_webhook(txId)
+        Request.post(
+          body: { resendStatusUpdated: true, resendCreated: false },
+          path: "/v1/webhooks/resend/#{txId}")
+      end
+
+      def create_new_transaction(options: {})
+        Request.post(
+          body: options,
+          path: "/v1/transactions"
+        )
+      end
+
+      def get_transaction(txId)
+        Request.get(path: "/v1/transactions/#{txId}")
+      end
     end
   end
 end
