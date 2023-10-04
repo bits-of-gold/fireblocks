@@ -8,8 +8,8 @@ module Fireblocks
         Request.get(path: '/v1/vault/accounts_paged')
       end
 
-      def create_vault_account(name:)
-        Request.post(body: { name: name }, path: '/v1/vault/accounts')
+      def create_vault_account(name:, customer_ref_id:)
+        Request.post(body: { name: name, customerRefId: customer_ref_id }, path: '/v1/vault/accounts')
       end
 
       def get_vault_account(id)
