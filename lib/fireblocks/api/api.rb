@@ -83,6 +83,26 @@ module Fireblocks
       def get_tx_by_external_tx_id(external_tx_id)
         Request.get(path: "/v1/transactions/external_tx_id/#{external_tx_id}/")
       end
+
+      # options: { operation: "TRANSFER", source: { type: "VAULT_ACCOUNT" id: ""}, destination: { type: "VAULT_ACCOUNT", id: ""}, assetId: "ETH", amount: "0.02" }
+      def fee_estimate(operation: "TRANSFER", options: {})
+        Request.post(
+          body: {
+            operation: options[:operation],
+            source: {
+              type: options[:source][:type],
+              id: options[:source][:id]
+            },
+            destination: {
+              type: options[:destination][:type],
+              id: options[:destination][:id]
+            },
+            assetId: options[:assetId],
+            amount: options[:amount],
+            treatAsGrossAmount: true
+          },
+          path: "/v1/transactions/estimate_fee")
+      end
     end
   end
 end
