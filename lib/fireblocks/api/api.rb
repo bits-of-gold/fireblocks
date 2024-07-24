@@ -84,6 +84,13 @@ module Fireblocks
         Request.get(path: "/v1/transactions/external_tx_id/#{external_tx_id}/")
       end
 
+      def set_confirmation_threshold(txId, number_of_confirmation)
+        Request.post(
+          body: { numOfConfirmations: number_of_confirmation },
+          path: "/v1/transactions/#{txId}/set_confirmation_threshold"
+        )
+      end
+
       # options: { operation: "TRANSFER", source: { type: "VAULT_ACCOUNT" id: ""}, destination: { type: "VAULT_ACCOUNT", id: ""}, assetId: "ETH", amount: "0.02" }
       def fee_estimate(operation: "TRANSFER", options: {})
         Request.post(
