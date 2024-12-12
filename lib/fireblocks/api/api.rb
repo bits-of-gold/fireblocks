@@ -98,10 +98,8 @@ module Fireblocks
           path: "/v1/transactions/estimate_fee")
       end
 
-      def tx_history(options: {})
-        Request.post(
-          body: options,
-          path: "/v1/transactions")
+      def tx_history(query_params:)
+        Request.get(path: "/v1/transactions?#{query_params}")
       end
     end
   end
