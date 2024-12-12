@@ -97,6 +97,12 @@ module Fireblocks
           body: options,
           path: "/v1/transactions/estimate_fee")
       end
+
+      def tx_history(options: {})
+        Request.post(
+          body: options,
+          path: "/v1/transactions")
+      end
     end
   end
 end
