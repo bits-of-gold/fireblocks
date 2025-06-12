@@ -4,8 +4,11 @@ module Fireblocks
   # Namespace to access Fireblocks api methods
   class API
     class << self
-      def get_vault_accounts
-        Request.get(path: '/v1/vault/accounts_paged')
+      def get_vault_accounts(query_params: '')
+        path = '/v1/vault/accounts_paged'
+        path += "?#{query_params}" if query_params.present?
+      
+        Request.get(path: path)
       end
 
       def create_vault_account(name:, customer_ref_id:)
