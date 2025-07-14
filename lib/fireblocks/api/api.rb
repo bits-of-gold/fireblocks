@@ -104,6 +104,13 @@ module Fireblocks
       def tx_history(query_params:)
         Request.get(path: "/v1/transactions?#{query_params}")
       end
+
+      def set_asset_price(asset_id, price, currency)
+        Request.post(
+          body: { currency: currency, price: price },
+          path: "/v1/assets/prices/#{asset_id}"
+        )
+      end
     end
   end
 end
