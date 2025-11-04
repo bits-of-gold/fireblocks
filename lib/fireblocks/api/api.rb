@@ -7,7 +7,7 @@ module Fireblocks
       def get_vault_accounts(query_params: '')
         path = '/v1/vault/accounts_paged'
         path += "?#{query_params}" if query_params.present?
-      
+
         Request.get(path: path)
       end
 
@@ -47,6 +47,48 @@ module Fireblocks
       def get_deposit_addresses(vault_account_id, asset_id)
         Request.get(
           path: "/v1/vault/accounts/#{vault_account_id}/#{asset_id}/addresses"
+        )
+      end
+
+      # Get all unspent transaction inputs (UTXOs) for a vault account and asset
+      #
+      # Returns unspent inputs information of an UTXO asset in a vault account.
+      # Endpoint: GET /v1/vault/accounts/{vaultAccountId}/{assetId}/unspent_inputs
+      #
+      # @param vault_account_id [String, Integer] The ID of the vault account (required)
+      # @param asset_id [String] The ID of the asset (required, e.g., "BTC", "BTC_TEST", "LTC", "LTC_TEST")
+      # @return [Array<Hash>] Array of unspent input objects
+      #
+      # @example
+      #   Fireblocks::API.get_unspent_inputs("0", "BTC")
+      #
+      # @example Response format
+      #   [
+      #     {
+      #       "input" => {
+      #         "txHash" => "6b21446af4a5e3ec588960d2338ab52428a3eb729038146ea09905199723061f",
+      #         "index" => 0
+      #       },
+      #       "address" => "bc1qjhm0h7vhdyu0d0luv34dlz654rmsvg8twywk99",
+      #       "amount" => "0.0009",
+      #       "confirmations" => 4780,
+      #       "status" => "AVAILABLE"
+      #     }
+      #   ]
+      #
+      # Response fields:
+      # - input (Hash): A representation of an Unspent Transaction Output (UTXO)
+      #   - txHash (String): Transaction Hash
+      #   - index (Integer): The UTXO index (vOut)
+      # - address (String): The blockchain address associated with the UTXO
+      # - amount (String): The quantity of the asset held in the UTXO, expressed in base asset units
+      # - confirmations (Integer): The count of confirmations on the blockchain for this UTXO
+      # - status (String): UTXO Status - one of: "AVAILABLE", "PENDING", "FROZEN"
+      #
+      # @see https://developers.fireblocks.com/reference/getunspentinputs
+      def get_unspent_inputs(vault_account_id, asset_id)
+        Request.get(
+          path: "/v1/vault/accounts/#{vault_account_id}/#{asset_id}/unspent_inputs"
         )
       end
 
