@@ -62,7 +62,7 @@ module Fireblocks
 
     def send_request(request)
       Net::HTTP.start(
-        uri.hostname, uri.port, use_ssl: true
+        uri.hostname, uri.port, use_ssl: uri.scheme == 'https'
       ) { |http| http.request(request) }
     end
 
