@@ -72,6 +72,17 @@ module Fireblocks
           path: "/v1/webhooks/resend/#{txId}")
       end
 
+      def list_webhooks
+        Request.get(path: '/v1/webhooks')
+      end
+
+      def resend_notifications_by_resource(webhook_id:, resource_id:)
+        Request.post(
+          body: { resourceId: resource_id, excludeStatuses: [] },
+          path: "/v1/webhooks/#{webhook_id}/notifications/resend_by_resource"
+        )
+      end
+
       def create_new_transaction(options: {})
         Request.post(
           body: options,
