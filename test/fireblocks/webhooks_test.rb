@@ -29,6 +29,27 @@ class FireblocksWebhooksTest < Minitest::Test
     assert_equal [{ 'id' => 'wh-1', 'status' => 'ENABLED' }], result
   end
 
+  def test_list_webhooks_requests_one_page
+    result = with_http_response(code: '200', message: 'OK', body: webhook_page) do
+      Fireblocks::API.list_webhooks(page_size: 10, page_cursor: 'cursor-1', order: 'ASC')
+    end
+    assert_equal 'GET', @captured_request.method
+    assert_equal '/v1/webhooks?pageSize=10&pageCursor=cursor-1&order=ASC', @captured_request.path
+    assert_equal JSON.parse(webhook_page), result
+  end
+
+  def test_list_webhooks_omits_unset_page_arguments
+    with_http_response(code: '200', message: 'OK', body: webhook_page) do
+      Fireblocks::API.list_webhooks(page_cursor: 'cursor-2')
+    end
+    assert_equal 'GET', @captured_request.method
+    assert_equal '/v1/webhooks?pageCursor=cursor-2', @captured_request.path
+  end
+
+  def webhook_page
+    '{"data":[{"id":"wh-1"}],"next":"cursor-2"}'
+  end
+
   def test_resend_notifications_by_resource_includes_completed_notifications
     result = with_http_response(code: '202', message: 'Accepted', body: '') do
       Fireblocks::API.resend_notifications_by_resource(webhook_id: 'wh-1', resource_id: 'tx-1')
