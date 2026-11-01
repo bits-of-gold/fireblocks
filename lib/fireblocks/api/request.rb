@@ -71,8 +71,10 @@ module Fireblocks
     end
 
     def valid_response!(req_response)
+      return if req_response.code == '202' && req_response.body.to_s.empty?
+
       resp = JSON.parse(req_response.body)
-      return resp if req_response.message == 'OK'
+      return resp if req_response.code == '202' || req_response.message == 'OK'
 
       raise Error, resp
     end

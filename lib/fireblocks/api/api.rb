@@ -72,6 +72,21 @@ module Fireblocks
           path: "/v1/webhooks/resend/#{txId}")
       end
 
+      def list_webhooks(page_size: nil, page_cursor: nil, order: nil)
+        query = { pageSize: page_size, pageCursor: page_cursor, order: order }
+        query.reject! { |_, value| value.nil? }
+        path = '/v1/webhooks'
+        path = "#{path}?#{URI.encode_www_form(query)}" unless query.empty?
+        Request.get(path: path)
+      end
+
+      def resend_notifications_by_resource(webhook_id:, resource_id:)
+        Request.post(
+          body: { resourceId: resource_id, excludeStatuses: [] },
+          path: "/v1/webhooks/#{webhook_id}/notifications/resend_by_resource"
+        )
+      end
+
       def create_new_transaction(options: {})
         Request.post(
           body: options,
